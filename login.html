@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login / Sign In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('https://static.vecteezy.com/system/resources/previews/011/062/211/large_2x/futuristic-abstract-molecular-dot-geometric-structure-space-background-animation-modern-triangle-shaped-technology-particle-analysis-themed-illustration-free-photo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      backdrop-filter: blur(10px);
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 40px;
+      box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.25);
+      max-width: 400px;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: white;
+    }
+
+    .container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ffffff;
+      text-shadow: 0 0 3px rgba(255, 255, 255, 0.4);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #f0f0f0;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border: 1px solid #ffffff;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      text-shadow: 0 0 3px #ffffff;
+    }
+
+    .btn:hover {
+      background-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .toggle {
+      text-align: center;
+      margin-top: 15px;
+      color: #ffffff;
+      cursor: pointer;
+      text-shadow: 0 0 2px white;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 id="form-title">Login</h2>
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" />
+    </div>
+    <div class="form-group" id="email-group" style="display:none;">
+      <label for="email">Email</label>
+      <input type="email" id="email" />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" />
+    </div>
+    <button class="btn" onclick="handleSubmit()" id="submit-btn">Login</button>
+    <div class="toggle" onclick="toggleForm()">Don't have an account? Sign Up</div>
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    let isSignIn = false;
+
+    function toggleForm() {
+      isSignIn = !isSignIn;
+      document.getElementById('form-title').innerText = isSignIn ? 'Sign In' : 'Login';
+      document.getElementById('submit-btn').innerText = isSignIn ? 'Sign In' : 'Login';
+      document.querySelector('.toggle').innerText = isSignIn ? 'Already have an account? Login' : "Don't have an account? Sign In";
+      document.getElementById('email-group').style.display = isSignIn ? 'block' : 'none';
+      document.getElementById('message').innerText = '';
+    }
+
+    function handleSubmit() {
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const message = document.getElementById('message');
+
+      if (!username || (!email && isSignIn) || !password) {
+        message.style.color = 'red';
+        message.innerText = 'Please fill in all fields.';
+        return;
+      }
+
+      if (isSignIn && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        message.style.color = 'red';
+        message.innerText = 'Invalid email format.';
+        return;
+      }
+
+      if (password.length < 6) {
+        message.style.color = 'red';
+        message.innerText = 'Password must be at least 6 characters.';
+        return;
+      }
+
+      // Success message
+      message.style.color = 'lightgreen';
+      message.innerText = isSignIn ? 'Sign in successful! Redirecting...' : 'Login successful! Redirecting...';
+
+      // Store user and redirect after short delay
+      localStorage.setItem('loggedInUser', username);
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
+
+
+
